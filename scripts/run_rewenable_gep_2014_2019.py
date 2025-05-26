@@ -116,17 +116,17 @@ final_df = gep_df[filter_cols]
 # EXPORT RESULTS
 ################
 
-# Function to filter dataframe for 2019 and save CSVs by Technology
+# Function to filter dataframe for years 2014-2019 and save CSVs by Technology
 def export_by_resource(df):
 
     # set output directory
-    out_dir = os.path.join(data_dir, 'results')
+    out_dir = os.path.join(data_dir, 'results_2014_2019')
     if out_dir:
         os.makedirs(out_dir, exist_ok=True) # create dir if needed
 
     # Filter years
-    df_filtered = df.loc[df['Year'] == 2019] # 2019 only base
-    # df_filtered = df[df['Year'].between(2014, 2019)].copy()
+    # df_filtered = df.loc[df['Year'] == 2019] # 2019 only base
+    df_filtered = df[df['Year'].between(2014, 2019)].copy()
 
     # Rename columns
     df_filtered.rename(columns={
@@ -148,7 +148,7 @@ def export_by_resource(df):
 
     # Save each df to CSV
     for tech, tech_df in technology_dfs.items():
-        filename = f'{tech.replace(" ", "_").lower()}_gep_2019.csv'
+        filename = f'{tech.replace(" ", "_").lower()}_gep_2014_2019.csv'
         out_path = os.path.join(out_dir, filename)
         tech_df.to_csv(out_path, index=False)
         print(f'Saved: {out_path}')
