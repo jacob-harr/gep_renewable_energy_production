@@ -1,4 +1,4 @@
-#!/Users/jakeharris/Files/gep/gep_env/bin/python3.11
+#!/Users/jakeharris/Files/repos/gep_renewable_energy_production/gep_env/bin/python3.11
 import sys
 from pip._internal.cli.main import main
 if __name__ == '__main__':

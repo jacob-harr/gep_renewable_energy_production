@@ -1,4 +1,4 @@
-"""Vectorized vector I/O using OGR."""
+"""Bulk-oriented vector I/O using OGR."""
 
 try:
     # we try importing shapely, to ensure it is imported (and it can load its
@@ -19,10 +19,12 @@ from pyogrio.core import (
     get_gdal_config_option,
     get_gdal_data_path,
     list_drivers,
+    list_drivers_details,
     list_layers,
     read_bounds,
     read_info,
     set_gdal_config_options,
+    vsi_curl_clear_cache,
     vsi_listtree,
     vsi_rmtree,
     vsi_unlink,
@@ -42,6 +44,7 @@ __all__ = [
     "get_gdal_config_option",
     "get_gdal_data_path",
     "list_drivers",
+    "list_drivers_details",
     "list_layers",
     "open_arrow",
     "read_arrow",
@@ -49,6 +52,7 @@ __all__ = [
     "read_dataframe",
     "read_info",
     "set_gdal_config_options",
+    "vsi_curl_clear_cache",
     "vsi_listtree",
     "vsi_rmtree",
     "vsi_unlink",

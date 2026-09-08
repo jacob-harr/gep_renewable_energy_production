@@ -27,7 +27,7 @@ if("TRUE")
 endif()
 cmake_policy(POP)
 
-find_dependency(unofficial-sqlite3)
+find_dependency(SQLite3)
 
 if(DEFINED PROJ_CONFIG_FIND_TIFF_DEP)
     find_dependency(TIFF)
