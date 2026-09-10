@@ -1,17 +1,10 @@
-# GEP: Renewable Energy Data Cleaning
-
 '''
-The purpose of this notebook is to clean the raw data for price and quantity of renewable energy resources.
+01_data_cleaner.py
 
-Quantity raw data
-- ../data/raw/IRENA_Stats_extract_2024 H2.xlsx
+NatCap TEEMs Global GEP: Renewable Energy Production
+Jacob Harris
 
-Price raw data
-- ../data/raw/WB-DB.xlsx
-
-PPP raw data
-- 
-- 
+The purpose of this notebook is to clean the raw data used for the renewable energy provisions in the Global GEP project
 
 Raw data files will have extraneous columns filtered out and the sheet of interest will be converted to CSV'
 '''

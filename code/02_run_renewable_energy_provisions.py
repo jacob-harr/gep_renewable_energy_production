@@ -1,4 +1,6 @@
 '''
+02_run_renewable_energy_provisions.py
+
 NatCap TEEMs Global GEP: Renewable Energy Production
 Jacob Harris
 
@@ -45,9 +47,7 @@ price_df['Price_USD_GWh'] = price_df['Price_USD_GWh'] * 10_000
 corr_gdf = gpd.read_file(os.path.join(raw_dir, 'ee_r264_correspondence.gpkg'))
 corr_gdf = corr_gdf[['iso3_r250_id', 'iso3_r250_label', 'iso3_r250_name']]
 
-# PPP price level ratio, produced by 01a_wb_data_getter.py.
-# WB_PPP_data.csv is long format (one row per country-year, 1990-2025),
-# so filter to TARGET_YEAR and keep just the merge key + ratio column.
+# Import PPP file
 ppp_path = os.path.join(data_dir, PPP_FILE)
 if not os.path.exists(ppp_path):
     raise FileNotFoundError(
@@ -61,10 +61,8 @@ ppp_df = ppp_df[['ISO3 code', 'price_level_ratio']]
 
 # --------------- QUANTITY ---------------
 
-# Filter to technologies of interest and aggregate to the resource
-# (Group Technology) level, summing across sub-technologies (e.g. solar
-# PV + solar thermal; onshore + offshore wind) and producer types, so
-# each country has a single row (and thus a single lambda) per resource.
+# Filter to technologies of interest and aggregate to the resource level
+# sum across sub-technologies (e.g. onshore + offshore wind) 
 quantity_df = (
     irena_df[irena_df['Group Technology'].isin(TECHNOLOGIES_OF_INTEREST)]
     .groupby(['Year', 'ISO3 code', 'Country', 'Group Technology'],
@@ -75,8 +73,7 @@ quantity_df = (
     )
 )
 
-# Q for every producing country in the target year (all producers,
-# whether or not price/PPP data exists for them).
+# Q for every producing country in the target year 
 q_year = quantity_df[quantity_df['Year'] == TARGET_YEAR].copy()
 
 # P for every country with a price in the target year.
@@ -87,9 +84,6 @@ price_year = price_df[price_df['Year'] == TARGET_YEAR][
 # --------------- NATURE'S CONTRIBUTIONS (lambda) ---------------
 
 # Lambda is computed on ALL producers with a valid capacity factor
-# (independent of price), matching run_renewable_energy_production_cf.py
-# so the diagnostic figures and these outputs share identical lambda
-# values. Countries without a valid CF have no lambda (NA in the output).
 core = q_year.copy()
 
 # Capacity factor: CF = Generation (GWh) / [Capacity (MW) * 8760 / 1000]

@@ -1,6 +1,7 @@
 '''
-run_renewable_energy_production_cf.py
-NatCap TEEMs Global GEP: Renewable Energy — Capacity Factor Diagnostics
+03_results_check.py
+
+NatCap TEEMs Global GEP: Renewable Energy 
 
 Pipeline stage 03. Recomputes capacity factor and the outlier-robust
 lambda and produces diagnostic outputs to ../output/diagnostics/:

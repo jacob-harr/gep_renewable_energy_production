@@ -18,9 +18,9 @@ NatCap TEEMs Global GEP results for renewable energy production
 
 ## Project Pipeline
 Either run the run_all.py script or run scripts in the following order:
-1. 01
-2. 02
-3. 03
+1. 01_data_cleaner.py
+2. 02_run_renewable_energy_provisions.py
+3. 03_results_vis.py
 
 ## YET TO IMPLEMENT
 - ReadMe should state purpose and software dependencies (I should add the requirements.txt)

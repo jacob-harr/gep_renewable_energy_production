@@ -7,7 +7,7 @@ Runs the full pipeline in order:
                                             -> ../data/*
   02  02_run_renewable_energy_provisions.py  compute PPP-adjusted GEP
                                             -> ../output/*_provision_gep.csv
-  03  03_results_check.py                   CF/lambda diagnostics + figures
+  03  03_results_vis.py                      CF/lambda diagnostics + figures
                                             -> ../output/diagnostics/
 
 Each stage runs as a subprocess from this script's directory, so the
@@ -30,7 +30,6 @@ STAGES = [
     ('02', '02_run_renewable_energy_provisions.py'),
     ('03', '03_results_check.py'),
 ]
-
 
 def main():
     here = os.path.dirname(os.path.abspath(__file__))
@@ -58,7 +57,6 @@ def main():
     print(f"\n{'=' * 72}")
     print("PIPELINE COMPLETE — all stages finished successfully.")
     print('=' * 72)
-
 
 if __name__ == '__main__':
     main()
