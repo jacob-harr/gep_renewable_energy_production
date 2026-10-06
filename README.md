@@ -7,12 +7,13 @@ NatCap TEEMs Global GEP results for renewable energy production
 - Geothermal Energy
 
 ## Directory Setup
-- data/raw should contain:
-    - API_PA.NUS.FCRF_DS2_en_csv_v2_32.csv
-    - API_PA.NUS.PPP_DS2_en_csv_v2_33039.csv
-    - ee_r264_correspondence.gpkg
+- /data/raw should contain:
     - WB-DB-xlsx
     - IRENA_Stats_extract_2024 H2.xlsx
+- /data/ should contain:
+    - ee_r264_correspondence.gpkg
+    - IRENA_prod_by_country.csv
+    - WB_price_data.csv
 
 - when running scripts, ensure your current working directory is set to /code/
 

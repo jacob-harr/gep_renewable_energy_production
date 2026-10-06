@@ -1,23 +1,25 @@
 '''
 NatCap TEEMs Global GEP: Renewable Energy — Pipeline Runner
 
-Runs the full pipeline in order:
+Runs the pipeline in order:
 
-  01  01_data_cleaner.py                     clean files in ../data/raw outputs to:
-                                            -> ../data/*
-  02  02_run_renewable_energy_provisions.py  compute PPP-adjusted GEP
+  01  01_data_getter.py                     clean data in ../data/raw
+                                            -> ../data/{}
+  02  02_run_renewable_energy_provisions.py  compute GEP (2019 USD)
                                             -> ../output/*_provision_gep.csv
-  03  03_results_vis.py                      CF/lambda diagnostics + figures
+  03  03_results_check.py                   CF/lambda diagnostics + figures
                                             -> ../output/diagnostics/
+
+Note: GEP is reported in 2019 USD — there is no PPP conversion. Stage 01
+still runs to refresh ../data/WB_PPP_data.csv, but stage 02 no longer
+consumes it.
 
 Each stage runs as a subprocess from this script's directory, so the
 scripts' relative paths (../data, ../output) resolve correctly. If any
 stage exits non-zero, the runner stops and reports which stage failed.
 
 Usage:
-    activate the provided venv: source gep_env/bin/activate
-    change cwd with: cd code
-    run with: python run_all.py
+    python run_all.py
 '''
 
 import os
@@ -26,10 +28,11 @@ import subprocess
 
 # Ordered pipeline stages: (label, script filename)
 STAGES = [
-    ('01', '01_data_cleaner.py'),
+    ('01', '01_data_getter.py'),
     ('02', '02_run_renewable_energy_provisions.py'),
     ('03', '03_results_check.py'),
 ]
+
 
 def main():
     here = os.path.dirname(os.path.abspath(__file__))
@@ -57,6 +60,7 @@ def main():
     print(f"\n{'=' * 72}")
     print("PIPELINE COMPLETE — all stages finished successfully.")
     print('=' * 72)
+
 
 if __name__ == '__main__':
     main()

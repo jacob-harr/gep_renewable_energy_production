@@ -97,79 +97,6 @@ filter_p_df.to_csv(csv_save_path, index=False)
 
 print(f"Sheet '{sheet_name}' has been cleaned and saved to '{csv_save_path}'.")
 
-# PPP data
-PPP_RAW_FILE = os.path.join(raw_dir, 'API_PA.NUS.PPP_DS2_en_csv_v2_33039.csv')
-FCRF_RAW_FILE = os.path.join(raw_dir, 'API_PA.NUS.FCRF_DS2_en_csv_v2_32.csv')
-OUTPUT_FILE = os.path.join(data_dir, 'WB_PPP_data.csv')
-SKIPROWS = 4                 # metadata lines before the real header
-YEAR_MIN, YEAR_MAX = 1990, 2025
-
-def clean_ppp_csv(raw_path, value_name, year_min=YEAR_MIN, year_max=YEAR_MAX):
-    """
-    Read a raw World Bank wide CSV and return a tidy long DataFrame:
-    ['Country Name', 'ISO3 code', 'Year', value_name]
-    for years in [year_min, year_max]. Missing observations dropped.
-    """
-    # Header is on line SKIPROWS+1; skiprows drops the metadata lines.
-    df = pd.read_csv(raw_path, skiprows=SKIPROWS)
-
-    # Drop any trailing unnamed column(s) from the line-ending comma
-    df = df.loc[:, ~df.columns.str.startswith('Unnamed')]
-
-    id_cols = ['Country Name', 'Country Code']
-
-    # Year columns: 4-digit headers within range
-    year_cols = [
-        c for c in df.columns
-        if c.isdigit() and year_min <= int(c) <= year_max
-    ]
-
-    long_df = df.melt(
-        id_vars=id_cols,
-        value_vars=year_cols,
-        var_name='Year',
-        value_name=value_name,
-    )
-
-    long_df['Year'] = long_df['Year'].astype(int)
-    long_df[value_name] = pd.to_numeric(long_df[value_name], errors='coerce')
-    long_df = long_df.dropna(subset=[value_name])
-    long_df = long_df.rename(columns={'Country Code': 'ISO3 code'})
-
-    return long_df
-
-print(f"Cleaning {PPP_RAW_FILE} ...")
-ppp = clean_ppp_csv(PPP_RAW_FILE, 'ppp_factor')
-
-print(f"Cleaning {FCRF_RAW_FILE} ...")
-fx = clean_ppp_csv(FCRF_RAW_FILE, 'exchange_rate')
-
-# Merge on country + year. Inner join keeps country-years that have
-# BOTH a PPP factor and an exchange rate (needed to form the ratio).
-merged = ppp.merge(
-    fx[['ISO3 code', 'Year', 'exchange_rate']],
-    on=['ISO3 code', 'Year'],
-    how='inner',
-)
-
-# price_level_ratio = PPP conversion factor / market exchange rate
-# (equivalent to World Bank indicator PA.NUS.PPPC.RF). Guard against
-# divide-by-zero from any zero exchange rates.
-merged = merged[merged['exchange_rate'] > 0].copy()
-merged['price_level_ratio'] = merged['ppp_factor'] / merged['exchange_rate']
-
-# Order columns and rows
-merged = merged[['Country Name', 'ISO3 code', 'Year',
-                    'ppp_factor', 'exchange_rate', 'price_level_ratio']]
-merged = merged.sort_values(['ISO3 code', 'Year']).reset_index(drop=True)
-
-merged.to_csv(OUTPUT_FILE, index=False)
-
-n_countries = merged['ISO3 code'].nunique()
-yr_lo, yr_hi = merged['Year'].min(), merged['Year'].max()
-print(f"Saved {len(merged):,} rows ({n_countries} economies, "
-        f"years {yr_lo}-{yr_hi}) to {OUTPUT_FILE}")
-
 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 print('script complete!')
 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
@@ -180,5 +107,4 @@ Output
 Resulting output file paths:
 - ../data/IRENA_prod_by_country.csv
 - ../data/WB_price_data.csv
-- ../data/WB_PPP_data.csv
 '''
