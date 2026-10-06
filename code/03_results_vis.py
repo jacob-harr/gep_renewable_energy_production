@@ -1,10 +1,10 @@
 '''
-03_results_check.py
-
-NatCap TEEMs Global GEP: Renewable Energy 
+run_renewable_energy_production_cf.py
+NatCap TEEMs Global GEP: Renewable Energy — Capacity Factor Diagnostics
 
 Pipeline stage 03. Recomputes capacity factor and the outlier-robust
-lambda and produces diagnostic outputs to ../output/diagnostics/:
+lambda (identically to 02a_run_renewable_energy_provisions.py) and
+produces diagnostic outputs to ../output/diagnostics/:
 
   1. CSV table: Q, CF, lambda for every country & resource
   2. Figures:
@@ -17,9 +17,8 @@ lambda and produces diagnostic outputs to ../output/diagnostics/:
      g. Missing-value diagnostics: NA counts + sole GEP blockers by input
         (reads the provision CSVs written by script 02 in ../output)
 
-This script does NOT write the provision CSVs; those come from 02.py.
-
-PREREQUISITE: Run 01 and 02 first (or via run_all.py).
+This script does NOT write the provision CSVs; those come from 02a.
+Run after 01a and 02a (or via run_all.py).
 '''
 
 import os
@@ -421,7 +420,7 @@ save_fig(fig, 'fig_f_cf_histograms_overlaid.png')
 # =====================================================================
 
 provision_dir = os.path.join('..', 'output')
-NA_COLS = ['Q', 'P', 'lambda', 'ppp_ratio']
+NA_COLS = ['Q', 'P', 'lambda']
 
 # Only build the figure if the 02 outputs exist (i.e. 02 has been run)
 available = {
@@ -459,7 +458,7 @@ else:
         b1 = ax.bar(x - width / 2, total_na, width, label='Total NA',
                     color='lightgrey', edgecolor='#888')
         b2 = ax.bar(x + width / 2, sole_na, width, label='Sole blocker of GEP',
-                    color='maroon', edgecolor='#888', alpha=0.85)
+                    color=TECH_COLORS[tech], alpha=0.85)
         ax.bar_label(b1, fontsize=8, padding=2)
         ax.bar_label(b2, fontsize=8, padding=2)
 

@@ -24,10 +24,7 @@ Either run the run_all.py script or run scripts in the following order:
 3. 03_results_vis.py
 
 ## YET TO IMPLEMENT
-- ReadMe should state purpose and software dependencies (I should add the requirements.txt)
-- A LICENSE file and a citation (BibTeX or plain text) for the project.
 - fig_g switch to looking at input dataset instead of variable name... (P and lambda will never be the sole NA because they come from the same dataset... so they will both be NA or both be available).
-- add duplicate logic to write-up
 - write-up .qmd file
 
 ### Data References:

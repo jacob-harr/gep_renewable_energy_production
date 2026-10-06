@@ -3,11 +3,11 @@ NatCap TEEMs Global GEP: Renewable Energy — Pipeline Runner
 
 Runs the pipeline in order:
 
-  01  01_data_getter.py                     clean data in ../data/raw
+  01  01_data_cleaner.py                     clean data in ../data/raw
                                             -> ../data/{}
   02  02_run_renewable_energy_provisions.py  compute GEP (2019 USD)
                                             -> ../output/*_provision_gep.csv
-  03  03_results_check.py                   CF/lambda diagnostics + figures
+  03  03_results_vis.py                      CF/lambda diagnostics + figures
                                             -> ../output/diagnostics/
 
 Note: GEP is reported in 2019 USD — there is no PPP conversion. Stage 01
@@ -28,9 +28,9 @@ import subprocess
 
 # Ordered pipeline stages: (label, script filename)
 STAGES = [
-    ('01', '01_data_getter.py'),
+    ('01', '01_data_cleaner.py'),
     ('02', '02_run_renewable_energy_provisions.py'),
-    ('03', '03_results_check.py'),
+    ('03', '03_results_vis.py'),
 ]
 
 
